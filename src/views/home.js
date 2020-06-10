@@ -1,44 +1,45 @@
-const home = (posts) => `
+const home = () => `
 <header>
   <div class="header">
     <div>
-      <span> name user</span>
-      <img src="" alt="icon-menu">
+      <span class="hide"> name user</span>
+      <img src="img/icon-triangleProfile.svg" class="hide"alt="icon-triangle-menu">
+      <img src="img/icon-menu.svg" class="icon-menu" alt="icon-menu">
     </div>
-    <img id ="logoImage" src="img/logo.svg" alt="logo-road-tips">
-    <span>Cerrar Sesión</span>
+    <img id ="logoImage" src="img/logo-roadtips.svg" alt="logo-road-tips">
+    <a href="#" class="hide"><span>Cerrar Sesión</span></a>
   </div>
 </header>
 <main>
-  <div class="profile">
-    <img src="" alt="">
-    <img src="" alt="img-profile">
-    <img src="" alt="icon-travel">
-  </div>
-  <div class="post-createPost">
-    <div class="container-createPost">
-      <div>
-        <input class="createPost" type="text" placeholder="¡Comparte tus tips aquí!">
-      </div>
-      <img src="" alt="createPostAddImage">
-      <img src="" alt="createPostPublic">
-      <img src="" alt="createPostPrivate">
-      <button class="button-createPost">Publicar</button>
+  <div class ="main">
+    <div class="profile">
+      <img src="" class="hide" alt="">
+      <img src="img/icon-color-user.svg" class="hide" alt="img-profile">
+      <img src="" class="hide" alt="icon-travel">
     </div>
-    <div class="posts">
-      <ul class="postPublic" id="publicPost">
-
-      </ul>
+    <div class="post-createPost">
+      <div class="container-createPost">
+        <div>
+          <input class="createPost" type="text" size="30" placeholder="¡Comparte tus tips aquí!">
+        </div>
+        <div id="containerIconsAndButton">
+          <div class="icons-createPost">
+            <img src="img/icon-addImage.svg" class="icon-createPost" alt="createPostAddImage">
+            <img src="img/icon-world.svg" class="icon-createPost" alt="createPostPublic">
+            <img src="img/icon-privacy.svg" class="hide icon-createPost" alt="createPostPrivate">
+          </div> 
+          <div class="container-buttonCreatePost">  
+            <button class="button-createPost">Publicar</button>
+          </div>
+        </div>
+      </div>
+      <div class="posts">
+        <ul class="postPublic" id="publicPost">
+        </ul>
+      </div>
     </div>
   </div>
 </main>
 `;
 
-const post = (post) => `
-  <li class="postList">
-  <h5>${post.title}</h5>
-  <p>${post.content}</p>
-</li>
-`;
-
-export { home, post };
+export { home };
