@@ -1,0 +1,344 @@
+.posts {
+  display: flex;
+  width: 350px;
+}
+
+.container-post {
+  margin: 10px 22px;
+  max-width: 400px;
+  border: solid 1px;
+  border-radius: 5px;
+  border-color: rgba(107, 163, 236, 0.486);
+}
+.text {
+  width: 100%;
+}
+.user-post {
+  height: 28px;
+  background-color: #ffe9d4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}
+.content-post {
+  width: 90%;
+  padding: 12px;
+  padding-bottom: 0px;
+}
+.saveAndCancelEditPost {
+  width: 100%;
+  margin: 8px;
+  justify-content: space-evenly;
+}
+.inputEditPost {
+  width: 290px;
+  padding: 5px;
+}
+.cancelEditPost,
+.saveEditPost {
+  background-color: #5d9becdc;
+  border-radius: 15px;
+  border: 0;
+  width: 70px;
+  padding: 3px;
+  font-size: 13px;
+  color: white;
+}
+.photoUser {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+.btnLikes {
+  border-style: none;
+  background-color: transparent;
+  outline: none;
+}
+.btnLikes:active {
+  border-style: none;
+  outline: none;
+  border-radius: 50%;
+  background-color: rgb(241, 93, 93);
+}
+.timeUserPost {
+  text-align: center;
+  font-size: 11px;
+  width: 50px;
+  margin-left: 25px;
+  margin-right: 5px;
+}
+.data {
+  padding: 3px;
+  overflow-wrap: break-word;
+  margin-bottom: 15px;
+}
+.content-post[data-visible='true'] {
+  visibility: visible;
+}
+.content-post[data-visible='false'] {
+  visibility: hidden;
+}
+.icon-contentPost {
+  width: 25px;
+  height: 30px;
+  border-style: none;
+}
+.icon-dropdown {
+  width: 20px;
+  justify-content: flex-end;
+}
+.icon-deletePost {
+  width: 20px;
+  cursor: pointer;
+}
+.letter-color {
+  font-size: 12px;
+}
+.dropdown-content .icon-deletePost {
+  width: 20px;
+  height: 20px;
+  padding: 6px;
+}
+.icon-editPost {
+  width: 20px;
+  height: 20px;
+  padding: 6px;
+}
+.likeAndCommentPost {
+  width: 285px;
+  margin: 5px;
+}
+/*Comments*/
+
+.textComment {
+  width: 250px;
+  height: 20px;
+  border: solid 1px;
+  border-color: rgba(107, 163, 236, 0.486);
+  border-radius: 4px;
+  padding: 5px;
+  overflow-wrap: break-word;
+}
+.buttonSend {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+.containerToContainerComments {
+  width: 350px;
+  padding-bottom: 8px;
+}
+.containerComments {
+  width: 285px;
+  border: solid 1px;
+  border-color: rgba(107, 163, 236, 0.486);
+  border-radius: 4px;
+  display: flex;
+  box-sizing: border-box;
+}
+.inputEditComment {
+  padding: 5px;
+  font-size: 13px;
+}
+.createComment {
+  width: 300px;
+  height: 40px;
+  padding-top: 5px;
+}
+.userPhotoComment {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+.user-photo-comment {
+  margin: auto 6px;
+}
+.userComment {
+  font-size: 13px;
+  color: #5d9becdc;
+}
+.dataContentComment {
+  font-size: 12px;
+  padding: 4px;
+}
+.timeAndEditDeleteComment {
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.divTimeComment {
+  align-content: flex-end;
+  padding: 5px;
+}
+.saveAndCancelEditComment {
+  padding-bottom: 3px;
+}
+.editAndDeleteButtons {
+  display: flex;
+  justify-content: space-between;
+  margin: 3px;
+}
+.cancelEditComment,
+.saveEditComment {
+  background-color: #5d9becdc;
+  border-radius: 15px;
+  border: 0;
+  width: 50px;
+  padding: 2px;
+  font-size: 12px;
+  color: white;
+}
+.commentEdit,
+.commentDelete {
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.timeComment {
+  font-size: 10px;
+}
+.icon-createPost {
+  width: 20px;
+  height: 20px;
+}
+.btnComments {
+  border-style: none;
+  background-color: transparent;
+}
+.btnComments:focus {
+  outline-color: transparent;
+  outline-style: none;
+}
+/*dropdown post */
+.dropbtn {
+  display: flex;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0px;
+  background-color: #f1f1f1;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+.dropdown-content img {
+  cursor: pointer;
+}
+.dropdown-content img:hover {
+  background-color: #ddd;
+}
+.iconTextDelete {
+  display: flex;
+  cursor: pointer;
+}
+.iconTextEdit {
+  display: flex;
+  cursor: pointer;
+}
+.dropdown:hover .dropdown-content {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.img-post {
+  width: inherit;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-bottom: 10px;
+}
+
+@media screen and (min-width: 900px) {
+  .no-photoPost {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: small;
+    /* background-image: url(../img/icon-user.svg);*/
+    background-size: contain;
+    text-align: center;
+  }
+  .containerToContainerPost {
+    display: flex;
+    width: 545px;
+  }
+  .container-post {
+    min-width: 450px;
+    max-width: 450px;
+    margin: 22px;
+    border: solid 1px;
+    border-radius: 5px;
+    border-color: rgba(107, 163, 236, 0.486);
+  }
+  .userPostData {
+    justify-content: flex-start;
+  }
+  .timeUserPost {
+    text-align: center;
+    font-size: 14px;
+  }
+  .titleUserPost {
+    font-size: 18px;
+  }
+  .containerToContainerComments {
+    width: 440px;
+    margin: 6px;
+  }
+  .containerComments {
+    width: 400px;
+    box-sizing: border-box;
+  }
+  .createComment {
+    width: 400px;
+  }
+  .mainComment {
+    flex-direction: column;
+  }
+  .textComment {
+    width: 350px;
+    height: 20px;
+    margin-left: 4px;
+  }
+  .user-photo-comment {
+    margin: auto 6px;
+  }
+  .userComment {
+    font-size: 14px;
+    color: #5d9becdc;
+  }
+  .contentComment {
+    font-size: 13px;
+  }
+  .likeAndCommentPost {
+    align-items: center;
+  }
+  .numberLikes {
+    padding-bottom: 20px;
+  }
+  .inputEditPost {
+    width: 300px;
+  }
+  .dataContentComment {
+    font-size: 13px;
+    padding: 4px;
+  }
+  .commentEdit,
+  .commentDelete {
+    font-size: 11px;
+  }
+  .inputEditComment {
+    width: 280px;
+  }
+  .cancelEditComment,
+  .saveEditComment {
+    width: 60px;
+    padding: 4px;
+    font-size: 13px;
+  }
+}

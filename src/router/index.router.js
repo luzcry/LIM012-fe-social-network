@@ -1,21 +1,42 @@
 import { pages } from '../controllers/index.js';
 
-const router = async (route) => {
-  let content = document.getElementById('root');
+const router = (route) => {
+  const content = document.getElementById('root');
   content.innerHTML = '';
 
-  console.log('route', route);
-
   switch (route) {
-    case '#/': {
-      return content.appendChild(pages.login());
-    }
-    case '#/home': {
-      return content.appendChild(await pages.home());
-    }
-    default: {
-      return content.appendChild(pages.login());
-    }
+    case '':
+    case '#':
+    case '#/':
+      content.appendChild(pages.loginUserWithEmail());
+      break;
+    case '#/home':
+      firebase.auth().onAuthStateChanged(async (userX) => {
+        if (!userX) {
+          window.location.hash = '#/';
+        } else {
+          const homeDiv = await pages.home();
+          content.appendChild(homeDiv);
+        }
+      });
+      break;
+    case '#/profile':
+      firebase.auth().onAuthStateChanged(async (userX) => {
+        if (!userX) {
+          window.location.hash = '#/';
+        } else {
+          const profileDiv = await pages.profile();
+          content.appendChild(profileDiv);
+        }
+      });
+      break;
+
+    case '#/register':
+      content.appendChild(pages.register());
+      break;
+    default:
+      content.appendChild(pages.NoFound());
+      break;
   }
 };
 
