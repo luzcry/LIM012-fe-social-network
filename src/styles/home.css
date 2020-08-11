@@ -10,6 +10,7 @@
 }
 #logoImage {
   margin: 0 auto;
+  padding: 5px;
 }
 .hide {
   display: none;
@@ -32,18 +33,30 @@
   flex-direction: row;
   padding-top: 20px;
 }
+/*boton para cancelar imagen*/
+.cancel-image {
+  width: 18px;
+  height: 18px;
+  background-image: url(../img/delete.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  background-color: #ffff;
+  padding-top: 30px;
+}
 .container-createPost {
+  width: 320px;
   border: solid 1px;
-  border-radius: 13px;
+  border-radius: 5px;
   border-color: rgba(107, 163, 236, 0.486);
   margin: 22px;
   padding: 8px 4px;
   justify-content: space-between;
   display: inline-block;
-}
-
-.container-icons-createpost {
-  padding: 5px 0 5px 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .createPost {
   width: 85%;
@@ -51,11 +64,13 @@
   border: solid 1px;
   border-color: rgba(0, 0, 0, 0.308);
   border-radius: 2px;
-  margin: 10px 22px 10px;
+  margin: 10px 18px 10px;
   padding: 5px;
 }
 #containerIconsAndButton {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .icons-createPost {
   padding-left: 20px;
@@ -68,7 +83,7 @@
   height: 28px;
 }
 .icon-world {
-  width: 28px;
+  width: 22px;
   padding-left: 4px;
 }
 .icon-mochila {
@@ -91,9 +106,6 @@
 .nameuser {
   padding: 8px;
 }
-.container-buttonCreatePost {
-  justify-content: flex-end;
-}
 .button-createPost {
   width: 80px;
   height: 27px;
@@ -102,9 +114,15 @@
   border: transparent;
   border-radius: 15px;
   font-size: 12pt;
-  margin-left: 10px;
+  margin-bottom: 10px;
+  margin-right: 20px;
   outline: none;
 }
+
+.icon-privacy {
+  padding-bottom: 2px;
+}
+
 .button-createPost:active {
   outline: none;
 }
@@ -130,12 +148,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0px 17px 0px 30px;
-  padding: 8px 4px;
+  padding-top: 8px;
 }
 .profile-box {
-  display: flex;
-  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
   align-items: center;
 }
 /* menu dropdown de movil */
@@ -152,11 +169,12 @@
   z-index: 1;
 }
 .menu-dropdown:hover .menu-dropdown-content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  margin-top: 40px;
 }
 .menu-dropdown-content :hover {
-  background-color: #ddd;
+  background-color: rgb(236, 234, 234);
 }
 .menu-dropdown-content img {
   cursor: pointer;
@@ -170,14 +188,14 @@
   cursor: pointer;
 }
 .edit-profile {
-  margin-left: 25px;
+  display: grid;
   background: none;
   border: none;
   padding: 0;
-  font: inherit;
   cursor: pointer;
   outline: inherit;
   color: #5d9cec;
+  padding-left: 30px;
 }
 .no-photoProfile {
   padding: 2px;
@@ -193,22 +211,32 @@
 .menu-dropdown-content .icon-userbtn {
   width: 20px;
   height: 20px;
-  padding: 6px;
-}
-.icon-outbtn {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
+  padding-top: 6px;
+  padding-left: 3px;
 }
 .menu-dropdown-content .icon-outbtn {
   width: 20px;
   height: 20px;
-  padding: 6px;
+  padding-top: 6px;
+  cursor: pointer;
 }
-.letter {
+/*img cargada en post*/
+.post-new-image {
+  width: 40px;
+  height: auto;
+  margin: 0px 0px 10px 130px;
+}
+.profile-dropdown {
   color: #5d9cec;
   cursor: pointer;
   text-decoration: none;
+}
+.profile-info {
+  color: #2e62a5;
+  font-size: 15px;
+  display: grid;
+  justify-content: center;
+  padding-left: 40px;
 }
 
 @media screen and (max-width: 900px) {
@@ -229,9 +257,6 @@
     display: grid;
     padding-left: 15px;
   }
-  .container-createPost {
-    width: 400px;
-  }
   #logoImage {
     position: static;
   }
@@ -245,7 +270,23 @@
 }
 
 @media screen and (min-width: 900px) {
+  * {
+    font-size: 18px;
+  }
   .mainPost {
     width: 100%;
+  }
+  .container-createPost {
+    width: 443px;
+  }
+  .createPost {
+    height: 70px;
+  }
+  #logoImage {
+    margin: 0 auto;
+    padding: 8px;
+  }
+  .header {
+    height: 75px;
   }
 }

@@ -1,5 +1,5 @@
 import { home } from '../views/home.js';
-import { post, editingPost, comment } from '../views/posts.js';
+import { post, comment } from '../views/posts.js';
 import { userStatus, user, logOut } from '../models/auth.js';
 import {
   getPosts,
@@ -9,8 +9,13 @@ import {
   updateLikesUser,
   getComments,
   createComment,
+  updatePostPrivate,
   getUserData,
+  deleteComment,
+  updateComment,
 } from '../models/crud.js';
+
+const date = firebase.firestore.Timestamp.fromDate(new Date());
 
 export default async () => {
   const currentUserUID = user().uid;
@@ -19,9 +24,7 @@ export default async () => {
 
   const onDeleteClick = async (id) => {
     await deletePost(id);
-    mapListToScreen();
   };
-
   // Llenando div con la data de POSTS
   const buildPost = (postData) => {
     const userPostID = postData.userID;
@@ -29,8 +32,8 @@ export default async () => {
     child.setAttribute('class', 'containerToContainerPost');
     child.innerHTML = post(postData);
 
-    const btnDelete = child.querySelector('.icon-deletePost');
-    const btnEdit = child.querySelector('.icon-editPost');
+    const btnDelete = child.querySelector('.iconTextDelete');
+    const btnEdit = child.querySelector('.iconTextEdit');
     const id = btnDelete.getAttribute('data-value');
 
     // fx de likes
@@ -45,9 +48,7 @@ export default async () => {
         arrayLikesUsers.push(currentUserUID);
       }
       await updateLikesUser(id, arrayLikesUsers);
-      mapListToScreen();
     });
-
 
     // Control de crear y ver comentarios
     const buttonViewComment = child.querySelector('.btnComments');
@@ -56,7 +57,9 @@ export default async () => {
     const buttonComment = child.querySelector('.buttonSend');
     buttonViewComment.addEventListener('click', async (e) => {
       e.preventDefault();
-      showComments();
+      const elementsListOfComment = child.querySelectorAll('.containerComments');
+      const spanCounterComments = child.querySelector('.counterComments');
+      spanCounterComments.textContent = elementsListOfComment.length;
       divCreateComment.classList.toggle('hide');
       listOfComments.classList.toggle('hide');
       buttonComment.addEventListener('click', async (event) => {
@@ -68,118 +71,221 @@ export default async () => {
           author: userName,
           content: inputComment,
           postID,
+          date,
         });
-        mapListToScreen();
-        // inputComment.innerHTML = '';
+        const newInputComment = child.querySelector('.textComment');
+        newInputComment.value = '';
       });
     });
-    const buildComment = (dataComment) => {
+    const buildComment = (commentData) => {
       const createCommentDivChild = document.createElement('div');
       createCommentDivChild.setAttribute('class', 'containerToContainerComments');
-      createCommentDivChild.innerHTML = comment(dataComment);
-      return createCommentDivChild;
-    };
-    const showComments = async () => {
-      const postDataID = postData.id;
-      const postDataComments = postData.commentsID;
-      console.log(postDataComments);
-      const commentList = await getComments(postDataID);
-      listOfComments.innerHTML = '';
-      const dataIdComment = listOfComments.getAttribute('data-id');
-      commentList.forEach((dataComment) => {
-        if (dataComment.postID === dataIdComment) {
-          postDataComments.push(dataIdComment);
-          listOfComments.appendChild(buildComment(dataComment));
+      createCommentDivChild.innerHTML = comment(commentData);
+      const btnDeleteComment = createCommentDivChild.querySelector('.commentDelete');
 
-          const spanCounterComments = child.querySelector('.counterComments');
-          spanCounterComments.textContent = postDataComments.length;
-          console.log(postDataComments);
+      const onDeleteClickComment = async (idComment) => {
+        await deleteComment(idComment);
+      };
+      btnDeleteComment.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('eliminando comentario');
+        const idDeleteComment = btnDeleteComment.getAttribute('data-value');
+        onDeleteClickComment(idDeleteComment);
+      });
+      // Editar comentarios
+      const contentCommentToEdit = createCommentDivChild.querySelector('.dataContentComment');
+      const userCommentID = contentCommentToEdit.getAttribute('data-value');
+      const inputEditComment = createCommentDivChild.querySelector('.inputEditComment');
+      const commentEdit = createCommentDivChild.querySelector('#editComment');
+      const saveAndCancelEditComment = createCommentDivChild.querySelector(
+        '.saveAndCancelEditComment',
+      );
+      const cancelEditComment = createCommentDivChild.querySelector('.cancelEditComment');
+      const saveEditComment = createCommentDivChild.querySelector('.saveEditComment');
+      const idCommentEdit = saveEditComment.getAttribute('data-value');
+
+      commentEdit.addEventListener('click', (event) => {
+        event.preventDefault();
+        contentCommentToEdit.classList.add('hide');
+        inputEditComment.classList.remove('hide');
+        saveAndCancelEditComment.classList.remove('hide');
+        if (userCommentID === currentUserUID) {
+          saveEditComment.addEventListener('click', async (ev) => {
+            ev.preventDefault();
+            const inputCommentEdited = inputEditComment.value;
+            await updateComment(idCommentEdit, inputCommentEdited);
+          });
+          cancelEditComment.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            contentCommentToEdit.classList.remove('hide');
+            inputEditComment.classList.add('hide');
+            saveAndCancelEditComment.classList.add('hide');
+          });
         }
       });
+      return createCommentDivChild;
     };
 
-    // INICIO botones de editar y eliminar post
+    getComments((querySnapshot) => {
+      listOfComments.innerHTML = '';
+      querySnapshot.docs.forEach((document) => {
+        const idC = document.id;
+        const doc = document.data();
+        const commentData = {
+          currentUser: user().uid,
+          id: idC,
+          photo: doc.photo,
+          author: doc.author,
+          content: doc.content,
+          date: doc.date.toDate().toLocaleString(),
+          userID: doc.userID,
+          postID: doc.postID,
+        };
+        const dataIdPostByComment = listOfComments.getAttribute('data-id');
+        if (commentData.postID === dataIdPostByComment) {
+          listOfComments.appendChild(buildComment(commentData));
+        }
+      });
+    });
+
+    // Eliminar posts
     btnDelete.addEventListener('click', (e) => {
       e.preventDefault();
       if (userPostID === currentUserUID) {
         onDeleteClick(id);
       }
     });
+
+    // Editar Posts
+    const contentToEdit = child.querySelector('.data');
+    const inputEditPost = child.querySelector('.inputEditPost');
+    const buttonsSaveAndCancelEdit = child.querySelector('.saveAndCancelEditPost');
+    const saveEditPost = child.querySelector('.saveEditPost');
+    const buttonCancelEdit = child.querySelector('.cancelEditPost');
+    const idPostEdit = saveEditPost.getAttribute('data-value');
+
     btnEdit.addEventListener('click', (e) => {
       e.preventDefault();
+      contentToEdit.classList.add('hide');
+      inputEditPost.classList.remove('hide');
+      buttonsSaveAndCancelEdit.classList.remove('hide');
       if (userPostID === currentUserUID) {
-        mapEditingList(id);
-        child.innerHTML = '';
-        child.innerHTML = post(postData, true);
+        saveEditPost.addEventListener('click', async (event) => {
+          event.preventDefault();
+          const inputPostEdited = inputEditPost.value;
+          await updatePost(idPostEdit, inputPostEdited);
+        });
+        // cancelar editarPost
+        buttonCancelEdit.addEventListener('click', (event) => {
+          event.preventDefault();
+          contentToEdit.classList.remove('hide');
+          inputEditPost.classList.add('hide');
+          buttonsSaveAndCancelEdit.classList.add('hide');
+        });
       }
     });
-    // FIN botones de editar y eliminar post
+
+    // pasando de private a public viceversa en post publicado
+    const buttonPublicPosted = child.querySelector('.publicPosted');
+    const buttonPrivatePosted = child.querySelector('.privatePosted');
+    buttonPublicPosted.addEventListener('click', async (e) => {
+      e.preventDefault();
+      buttonPublicPosted.classList.toggle('hide');
+      buttonPrivatePosted.classList.toggle('hide');
+      postIsPrivate = true;
+      await updatePostPrivate(id, postIsPrivate);
+    });
+    buttonPrivatePosted.addEventListener('click', async (e) => {
+      e.preventDefault();
+      buttonPrivatePosted.classList.toggle('hide');
+      buttonPublicPosted.classList.toggle('hide');
+      postIsPrivate = false;
+      await updatePostPrivate(id, postIsPrivate);
+    });
+    // FIN pasando de private a public viceversa en post publicado
     return child;
   };
-
-  const buildEditingPost = (postData) => {
-    const child = document.createElement('div');
-    child.innerHTML = editingPost(postData);
-
-    const btnDelete = child.querySelector('.icon-deletePost');
-    const btnEdit = child.querySelector('.icon-savePost');
-    const id = btnDelete.getAttribute('data-value');
-
-    btnDelete.addEventListener('click', async (e) => {
-      e.preventDefault();
-      onDeleteClick(id);
-    });
-    btnEdit.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const inputPost = child.querySelector('.inputPost').value;
-      await updatePost(id, inputPost);
-      mapListToScreen();
-    });
-
-    return child;
-  };
-  // FIN de div con la data de POSTS
 
   // Llenando div con la data de HOME - seccion de publicar
   const divElement = document.createElement('div');
   await userStatus();
   const userData = getUserData();
   const userId = user().uid;
-  firebase.firestore().collection('users').doc(userId).onSnapshot((querySnapshot) => {
-    const data = querySnapshot.data();
-    const arrayOfUserNameDivs = divElement.querySelectorAll('.name-f');
-    [].forEach.call(arrayOfUserNameDivs, (div) => {
-      // eslint-disable-next-line no-param-reassign
-      div.innerHTML = data.name;
+  firebase
+    .firestore()
+    .collection('users')
+    .doc(userId)
+    .onSnapshot((querySnapshot) => {
+      const data = querySnapshot.data();
+      const arrayOfUserNameDivs = divElement.querySelectorAll('.name-f');
+      [].forEach.call(arrayOfUserNameDivs, (div) => {
+        // eslint-disable-next-line no-param-reassign
+        div.innerHTML = data.name;
+      });
+      const country = divElement.querySelector('.Country');
+      const aboutMe = divElement.querySelector('.aboutMe');
+      country.innerHTML = data.country;
+      aboutMe.innerHTML = data.aboutMe;
     });
-    const country = divElement.querySelector('.Country');
-    const aboutMe = divElement.querySelector('.aboutMe');
-    country.innerHTML = data.country;
-    aboutMe.innerHTML = data.aboutMe;
-  });
 
   divElement.innerHTML = home(userData);
 
-  let postList = await getPosts();
+  // Inicio mostrar img cargada antes de publicar
+  const selectImage = divElement.querySelector('#selectImage');
+  const showPicture = divElement.querySelector('#showPicture');
+  const btnCancelImg = divElement.querySelector('#btnCancelImg');
+  // eslint-disable-next-line no-unused-vars
+  let imgFile = '';
+  selectImage.addEventListener('change', (e) => {
+    // Vista previa de imagen cargada
+    const input = e.target;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataURL = reader.result;
+      showPicture.src = dataURL;
+      // Almacena url en localStorage
+      localStorage.setItem('image', dataURL);
+    };
+    reader.readAsDataURL(input.files[0]);
+    imgFile = e.target.files[0];
+    // Aparece botón para cancelar imagen
+    btnCancelImg.classList.remove('hide');
+  });
+  // Cancela imagen antes de publicar
+  btnCancelImg.addEventListener('click', () => {
+    localStorage.removeItem('image');
+    showPicture.src = '';
+    btnCancelImg.classList.add('hide');
+  });
+  // Fin mostrar img cargada antes de publicar
+
   const listOfPosts = divElement.querySelector('#publicPost');
 
   const logoutBtn = divElement.querySelector('#logout');
-  logoutBtn.addEventListener('click', logOut);
-  // para verificar si hay usuario loggueado
-  firebase.auth().onAuthStateChanged((userExist) => {
-    if (userExist) {
-      console.log(userExist.displayName);
-      console.log(userExist);
-      console.log(userExist.uid);
-    } else {
-      console.log('no hay usuario signed in');
-    }
+  logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    logOut();
   });
 
-  const mapListToScreen = async () => {
+  getPosts((querySnapshot) => {
     listOfPosts.innerHTML = '';
-    postList = await getPosts();
-    postList.forEach((postData) => {
+    querySnapshot.docs.forEach((document) => {
+      const id = document.id;
+      const doc = document.data();
+      const postData = {
+        currentUser: user().uid,
+        id,
+        photo: doc.photo,
+        author: doc.author,
+        content: doc.content,
+        userID: doc.userID,
+        likesUsers: doc.likesUsers,
+        date: doc.date.toDate().toLocaleString(),
+        postPrivate: doc.postPrivate,
+        commentsID: doc.commentsID,
+        photoURL: doc.photoURL,
+      };
+
       const userPostID = postData.userID;
       if (postData.postPrivate === false) {
         const child = buildPost(postData);
@@ -190,28 +296,31 @@ export default async () => {
         listOfPosts.appendChild(child);
       }
     });
-  };
-  const mapEditingList = async (id) => {
-    listOfPosts.innerHTML = '';
-    postList = await getPosts();
-    console.log(postList);
-    postList.forEach((postData) => {
-      let child;
-      if (id === postData.id) {
-        child = buildEditingPost(postData);
-      } else {
-        child = buildPost(postData);
-      }
-      listOfPosts.appendChild(child);
-    });
-  };
-  mapListToScreen();
+  });
+
+  // INICIO privacidad de post por publicar
+  const buttonPublicPost = divElement.querySelector('.publicPost');
+  const buttonPrivatePost = divElement.querySelector('.privatePost');
+  let postIsPrivate = false;
+  buttonPublicPost.addEventListener('click', async (e) => {
+    e.preventDefault();
+    buttonPublicPost.classList.toggle('hide');
+    buttonPrivatePost.classList.toggle('hide');
+    postIsPrivate = true;
+  });
+  buttonPrivatePost.addEventListener('click', (e) => {
+    e.preventDefault();
+    buttonPrivatePost.classList.toggle('hide');
+    buttonPublicPost.classList.toggle('hide');
+    postIsPrivate = false;
+  });
+  // FIN privacidad de post por publicar
 
   const buttonPost = divElement.querySelector('.button-createPost');
   buttonPost.addEventListener('click', (e) => {
     e.preventDefault();
-    const inputPost = divElement.querySelector('.createPost');
-    const fileButton = divElement.querySelector('#postSelection');
+    const inputPost = divElement.querySelector('.createPost').value;
+    const fileButton = divElement.querySelector('#selectImage');
     if (fileButton.files.length !== 0) {
       const file = fileButton.files[0];
       const storageRef = firebase.storage().ref(`img/${file.name}`);
@@ -223,21 +332,49 @@ export default async () => {
             createPost({
               photo: userPhoto,
               author: userName,
-              content: inputPost.value,
+              content: inputPost,
+              postPrivate: postIsPrivate,
               photoURL: url,
+              date,
             });
-            console.log("post'created");
           });
         }
-        inputPost.value = '';
-        mapListToScreen();
+        // Inicio quitar img de la pre visualizacion
+        localStorage.removeItem('image');
+        showPicture.src = '';
+        btnCancelImg.classList.add('hide');
+        // Fin quitar img de la pre visualizacion
+        const newfileButton = divElement.querySelector('#selectImage');
+        newfileButton.value = '';
+        const newInput = divElement.querySelector('.createPost');
+        newInput.value = '';
       });
+    } else {
+      createPost({
+        photo: userPhoto,
+        author: userName,
+        content: inputPost,
+        postPrivate: postIsPrivate,
+        photoURL: '',
+      });
+      const newInput = divElement.querySelector('.createPost');
+      newInput.value = '';
     }
-    const btnClickEditProfile = divElement.querySelector('.edit-profile');
-    btnClickEditProfile.addEventListener('click', () => {
-      window.location.hash = '/profile';
-    });
     // FIN de div con la data de HOME
+  });
+  const btnClickEditProfile = divElement.querySelector('.edit-profile');
+  btnClickEditProfile.addEventListener('click', () => {
+    window.location.hash = '/profile';
+  });
+  const hamburguerMenuProfile = divElement.querySelector('#profileHamburguer');
+  hamburguerMenuProfile.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.hash = '/profile';
+  });
+  const logoutMenuHam = divElement.querySelector('.logout');
+  logoutMenuHam.addEventListener('click', (e) => {
+    e.preventDefault();
+    logOut();
   });
   return divElement;
 };

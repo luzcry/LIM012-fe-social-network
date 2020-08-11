@@ -4,8 +4,8 @@ import { user } from '../models/auth.js';
 const photo = () => {
   return user().photoURL !== undefined
     ? `<img src="${user().photoURL}" class="photoUserProfile" alt="${
-        user().displayName
-      }" />`
+    user().displayName
+    }" />`
     : `<div class="no-photoProfile"><span>${user().displayName[0].toUpperCase()}</span></div>`;
 };
 const home = () => `
@@ -19,14 +19,14 @@ const home = () => `
       <div class="menu-dropdown">
         <img src="img/icon-menu.svg" class="icon-menu-dropdown menubtn" alt="icon-menu">
           <div class="menu-dropdown-content">
-            <div>
-              <img src="img/icon-user.svg" data-value="" class="icon-userbtn" alt="icon delete">
-              <span class="letter"> Perfil </span>
+            <div id="profileHamburguer">
+              <img src="img/icon-user.svg" class="icon-userbtn" alt="icon user">
+              <span class="profile-dropdown"> Perfil </span>
             </div>
-            <div id="logout-dropdown">
-              <img src="img/icon-logout.svg" data-value="" class="icon-outbtn" alt="icon delete">
-              <a href="#" class="letter" id ="logout"><span>Cerrar Sesión</span></a>
-            </div>
+            <div class="logout"> 
+            <img src="img/icon-logout.svg" class="icon-outbtn" alt="logout">
+              <span class="profile-dropdown"> Cerrar sesión </span>
+              </div>
           </div> 
       </div>      
     </div>
@@ -46,9 +46,9 @@ const home = () => `
             <span class="nameuser name-f"></span>
             <img src="img/icon-mochila.svg" class="icon-mochila" alt="icon-mochila">
           </div>
-          <span class="Country"> </span>
-          <span class="aboutMe"> </span>
-            <div class="edit-profile"> 
+            <span class="profile-info Country"> </span>
+            <span class="profile-info aboutMe"> </span>
+          <div class="edit-profile"> 
             <button class="edit-profile"> Editar Perfil </button>
           </div>
         </div>  
@@ -62,16 +62,17 @@ const home = () => `
           <div class="text">
            <textarea class="createPost" type="text" cols="0" rows="5" placeholder="¡Comparte tus tips aquí!"></textarea>
           </div>
+          <img id="showPicture" class="post-new-image" src="#" alt="">
+          <button id="btnCancelImg" class="hide cancel-image"></button>
           <div id="containerIconsAndButton">
             <div class="icons-createPost">
-              <div class="container-icons-createpost">
-                <input type="file" id="postSelection" value=""></input>
-              </div> 
-              <div>
-                <button class="buttonAddImagePost" id="iconAddImage"><img class="buttonAddImagePost" src="img/icon-addImage.svg" alt="createPostAddImage"></button>
-                <img src="img/icon-world.svg" class="icon-world" alt="createPostPublic">
-                <img src="img/icon-privacy.svg" class="hide icon-privacy" alt="createPostPrivate">
-              </div> 
+            <label for="selectImage">
+              <input type="file" id="selectImage" class="upload hide" accept="image/jpeg, image/png, image/gif">
+              <img src="img/icon-addImage.svg" class="icon-addImage" alt="createPostAddImage">
+            </label>
+              
+              <img src="img/icon-world.svg" class="icon-world publicPost" alt="createPostPublic">
+              <img src="img/icon-privacy.svg" class="icon-privacy privatePost hide " alt="createPostPrivate">
             </div> 
             <div class="container-buttonCreatePost">  
               <button class="button-createPost">Publicar</button>
