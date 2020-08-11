@@ -3,7 +3,9 @@ import { user } from '../models/auth.js';
 // eslint-disable-next-line arrow-body-style
 const photo = () => {
   return user().photoURL !== undefined
-    ? `<img src="${user().photoURL}" class="photoUserProfile" alt="${user().displayName}" />`
+    ? `<img src="${user().photoURL}" class="photoUserProfile" alt="${
+        user().displayName
+      }" />`
     : `<div class="no-photoProfile"><span>${user().displayName[0].toUpperCase()}</span></div>`;
 };
 const home = () => `
@@ -62,10 +64,14 @@ const home = () => `
           </div>
           <div id="containerIconsAndButton">
             <div class="icons-createPost">
-              <input type="file" id="postSelection" value=""></input>
-              <button class="buttonAddImagePost" id="iconAddImage"><img class="buttonAddImagePost" src="img/icon-addImage.svg" alt="createPostAddImage"></button>
-              <img src="img/icon-world.svg" class="icon-world" alt="createPostPublic">
-              <img src="img/icon-privacy.svg" class="hide icon-privacy" alt="createPostPrivate">
+              <div class="container-icons-createpost">
+                <input type="file" id="postSelection" value=""></input>
+              </div> 
+              <div>
+                <button class="buttonAddImagePost" id="iconAddImage"><img class="buttonAddImagePost" src="img/icon-addImage.svg" alt="createPostAddImage"></button>
+                <img src="img/icon-world.svg" class="icon-world" alt="createPostPublic">
+                <img src="img/icon-privacy.svg" class="hide icon-privacy" alt="createPostPrivate">
+              </div> 
             </div> 
             <div class="container-buttonCreatePost">  
               <button class="button-createPost">Publicar</button>

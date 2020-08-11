@@ -33,15 +33,17 @@
   padding-top: 20px;
 }
 .container-createPost {
-    height: 130px;
-    border: solid 1px;
-    border-radius: 13px;
-    border-color: rgba(107, 163, 236, 0.486);
-    margin: 22px;
-    padding: 8px 4px;
-    justify-content: space-between;
-    display: inline-block;
-    width: 450px;
+  border: solid 1px;
+  border-radius: 13px;
+  border-color: rgba(107, 163, 236, 0.486);
+  margin: 22px;
+  padding: 8px 4px;
+  justify-content: space-between;
+  display: inline-block;
+}
+
+.container-icons-createpost {
+  padding: 5px 0 5px 0;
 }
 .createPost {
   width: 85%;
@@ -58,7 +60,7 @@
 .icons-createPost {
   padding-left: 20px;
 }
-.buttonAddImagePost{
+.buttonAddImagePost {
   cursor: pointer;
   border: none;
   background-color: transparent;
@@ -220,24 +222,24 @@
   #logout {
     display: none;
   }
-  .profile-post{
+  .profile-post {
     max-width: 300px;
   }
-  .menu-dropdown{
-   display: grid;
-   padding-left: 15px;
+  .menu-dropdown {
+    display: grid;
+    padding-left: 15px;
   }
-  .container-createPost{
-        width: 400px;
+  .container-createPost {
+    width: 400px;
   }
-  #logoImage{
+  #logoImage {
     position: static;
   }
-  .menubtn{
+  .menubtn {
     display: grid;
     margin-top: 18px;
   }
-  .logout-dropdown{
+  .logout-dropdown {
     flex-direction: column;
   }
 }
@@ -246,5 +248,4 @@
   .mainPost {
     width: 100%;
   }
-
 }

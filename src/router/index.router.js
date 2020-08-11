@@ -8,6 +8,7 @@ const router = (route) => {
     case '':
     case '#':
     case '#/':
+    case '#/login':
       content.appendChild(pages.loginUserWithEmail());
       break;
     case '#/home':

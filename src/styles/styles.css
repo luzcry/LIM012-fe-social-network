@@ -9,6 +9,7 @@
   display: grid;
   grid-template-columns: 60% 40%;
   background-color: #ffe9d4;
+  height: 100vh;
 }
 
 .container-backgroundImage {
@@ -152,6 +153,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    height: 100vh;
   }
   .container-backgroundImage {
     display: none;
