@@ -58,8 +58,7 @@
 .btnLikes:active {
   border-style: none;
   outline: none;
-  border-radius: 50%;
-  background-color: rgb(241, 93, 93);
+  background-color: #f7d2af;
 }
 .timeUserPost {
   text-align: center;
@@ -113,6 +112,7 @@
 
 .textComment {
   width: 250px;
+  outline: none;
   height: 20px;
   border: solid 1px;
   border-color: rgba(107, 163, 236, 0.486);
@@ -168,8 +168,8 @@
   flex-wrap: wrap;
 }
 .divTimeComment {
-  align-content: flex-end;
-  padding: 5px;
+  padding: 4px;
+  display: flex;
 }
 .saveAndCancelEditComment {
   padding-bottom: 3px;
@@ -194,6 +194,7 @@
   font-size: 10px;
   font-weight: bold;
   cursor: pointer;
+  display: contents;
 }
 .timeComment {
   font-size: 10px;
@@ -304,6 +305,7 @@
     width: 350px;
     height: 20px;
     margin-left: 4px;
+    outline: none;
   }
   .user-photo-comment {
     margin: auto 6px;
@@ -331,6 +333,7 @@
   .commentEdit,
   .commentDelete {
     font-size: 11px;
+    display: contents;
   }
   .inputEditComment {
     width: 280px;

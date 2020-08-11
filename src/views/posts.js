@@ -1,9 +1,9 @@
 const post = (data) => {
   // eslint-disable-next-line operator-linebreak
   const photo =
-    data.photo !== null
-      ? `<img src='${data.photo}' class='photoUser' alt='${data.author}' />`
-      : `<div class='no-photoPost'> <span>${data.author}</span></div>`;
+        data.photo !== null
+          ? `<img src='${data.photo}' class='photoUser' alt='${data.author}' />`
+          : `<div class='no-photoPost'> <span>${data.author}</span></div>`;
   const postPhoto = data.photoURL !== ''
     ? `<img src='${data.photoURL}' class='img-post' alt='${data.author}' />`
     : '';

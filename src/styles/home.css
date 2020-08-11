@@ -100,8 +100,8 @@
   position: fixed;
 }
 .img-back {
-  width: 70%;
-  height: 70%;
+  margin-left: 40px;
+  width: 80%;
 }
 .nameuser {
   padding: 8px;
@@ -118,6 +118,11 @@
   margin-right: 20px;
   outline: none;
 }
+
+.icon-privacy {
+  padding-bottom: 2px;
+}
+
 .button-createPost:active {
   outline: none;
 }
